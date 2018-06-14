@@ -19,15 +19,19 @@
             android:id="@+id/tbTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingrese Monto"
+            android:text="@string/title_add_amount"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             android:fontPath="fonts/Roboto-Medium.ttf"
-            android:textColor="@color/colorPrimaryText"/>
+            android:textColor="@color/colorWhiteText"/>
+
 
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>

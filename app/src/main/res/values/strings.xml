@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">PaymentApp</string>
+
+    <!--LAYOUTS STRINGS-->
+    <string name="amount">Monto a pagar</string>
+    <string name="font_default">fonts/Roboto-Regular.ttf</string>
+
+    <!--TITLE BAR-->
+    <string name="title_add_amount">Ingrese Monto</string>
+    <string name="title_pick_payment">Seleccione un Medio de Pago</string>
+    <string name="title_pick_bank">Seleccione un Banco</string>
+    <string name="title_pick_fee">Seleccione una Cantidad de Cuotas</string>
 </resources>

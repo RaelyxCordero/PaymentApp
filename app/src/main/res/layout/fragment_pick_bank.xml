@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/payment"
+        app:layout_constraintBottom_toTopOf="@id/inputLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="125dp" />
+
+    <fr.ganfra.materialspinner.MaterialSpinner
+        android:id="@+id/spnPayment"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="220dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:ms_alignLabels="false"
+        app:ms_arrowColor="@color/colorSecondaryText"
+        app:ms_baseColor="@color/colorSecondaryText"
+        app:ms_dropDownHintView="@android:layout/simple_dropdown_item_1line"
+        app:ms_enableErrorLabel="false"
+        app:ms_enableFloatingLabel="true"
+        app:ms_floatingLabelColor="@color/colorSecondaryText"
+        app:ms_floatingLabelText="Banco"
+        app:ms_hint="Banco"
+        app:ms_hintColor="@color/colorSecondaryText"
+        app:ms_multiline="false"
+        app:ms_typeface="@string/font_default" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="50dp"
+            android:layout_marginRight="30dp"
+            android:src="@drawable/ic_arrow_forward"
+            app:fabSize="normal" />
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.constraint.ConstraintLayout>

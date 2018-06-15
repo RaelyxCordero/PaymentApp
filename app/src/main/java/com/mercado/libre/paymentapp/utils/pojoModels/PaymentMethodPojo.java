@@ -1,4 +1,4 @@
-package com.mercado.libre.paymentapp.pojoModels;
+package com.mercado.libre.paymentapp.utils.pojoModels;
 
 /**
  * Created by raelyx on 13/06/18.

@@ -1,5 +1,5 @@
 
-package com.mercado.libre.paymentapp.pojoModels;
+package com.mercado.libre.paymentapp.utils.pojoModels;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by raelyx on 13/06/18.
  */
 
-public class ResponseAmountsPojo {
+public class ResponseFeesPojo {
 
     @SerializedName("payment_method_id")
     @Expose
@@ -30,7 +30,7 @@ public class ResponseAmountsPojo {
     @Expose
     private List<PayerCost> payerCosts = null;
 
-    public ResponseAmountsPojo() {
+    public ResponseFeesPojo() {
     }
 
     public String getPaymentMethodId() {

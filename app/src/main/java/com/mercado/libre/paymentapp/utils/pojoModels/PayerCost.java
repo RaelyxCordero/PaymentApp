@@ -1,5 +1,5 @@
 
-package com.mercado.libre.paymentapp.pojoModels;
+package com.mercado.libre.paymentapp.utils.pojoModels;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

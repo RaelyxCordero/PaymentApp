@@ -1,14 +1,13 @@
-
-package com.mercado.libre.paymentapp.pojoModels;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.mercado.libre.paymentapp.utils.pojoModels;
 
 /**
  * Created by raelyx on 13/06/18.
  */
 
-public class Issuer {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class BancoPojo {
 
     @SerializedName("id")
     @Expose
@@ -22,27 +21,37 @@ public class Issuer {
     @SerializedName("thumbnail")
     @Expose
     private String thumbnail;
+    @SerializedName("processing_mode")
+    @Expose
+    private String processingMode;
+    @SerializedName("merchant_account_id")
+    @Expose
+    private Object merchantAccountId;
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
-    public Issuer() {
+    public BancoPojo() {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param secureThumbnail
      * @param thumbnail
      * @param name
+     * @param merchantAccountId
+     * @param processingMode
      */
-    public Issuer(String id, String name, String secureThumbnail, String thumbnail) {
+    public BancoPojo(String id, String name, String secureThumbnail, String thumbnail, String processingMode, Object merchantAccountId) {
         super();
         this.id = id;
         this.name = name;
         this.secureThumbnail = secureThumbnail;
         this.thumbnail = thumbnail;
+        this.processingMode = processingMode;
+        this.merchantAccountId = merchantAccountId;
     }
 
     public String getId() {
@@ -77,4 +86,21 @@ public class Issuer {
         this.thumbnail = thumbnail;
     }
 
+    public String getProcessingMode() {
+        return processingMode;
+    }
+
+    public void setProcessingMode(String processingMode) {
+        this.processingMode = processingMode;
+    }
+
+    public Object getMerchantAccountId() {
+        return merchantAccountId;
+    }
+
+    public void setMerchantAccountId(Object merchantAccountId) {
+        this.merchantAccountId = merchantAccountId;
+    }
+
 }
+

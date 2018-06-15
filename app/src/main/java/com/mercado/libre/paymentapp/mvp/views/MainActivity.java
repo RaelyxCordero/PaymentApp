@@ -1,8 +1,10 @@
-package com.mercado.libre.paymentapp;
+package com.mercado.libre.paymentapp.mvp.views;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.mercado.libre.paymentapp.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

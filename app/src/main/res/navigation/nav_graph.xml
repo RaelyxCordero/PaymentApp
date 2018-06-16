@@ -37,7 +37,6 @@
         android:name="com.mercado.libre.paymentapp.mvp.views.fragments.PickFeesFragment"
         android:label="fragment_pick_fees"
         tools:layout="@layout/fragment_pick_fees" >
-
         <action
             android:id="@+id/action_pickFeesFragment_to_addAmountFragment2"
             app:destination="@id/addAmountFragment" />

@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by raelyx on 15/06/18.
@@ -11,7 +12,7 @@ import retrofit2.Retrofit;
 
 public class BasePresenter {
     private static final long TIMEOUT = 60;
-    private static final String URL_BASE = "https://api.mercadopago.com/v1";
+    private static final String URL_BASE = "https://api.mercadopago.com/v1/";
     protected static final String PUBLIC_KEY = "444a9ef5-8a6b-429f-abdf-587639155d88";
     private Retrofit retrofit;
 
@@ -27,6 +28,7 @@ public class BasePresenter {
 
         return new Retrofit.Builder()
                 .baseUrl(URL_BASE)
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
     }

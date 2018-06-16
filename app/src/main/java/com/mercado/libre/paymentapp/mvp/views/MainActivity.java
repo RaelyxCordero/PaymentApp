@@ -7,12 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.BaseMenuPresenter;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mercado.libre.paymentapp.R;
+import com.mercado.libre.paymentapp.mvp.presenters.BankPresenter;
+import com.mercado.libre.paymentapp.mvp.presenters.FeePresenter;
+import com.mercado.libre.paymentapp.mvp.presenters.PaymentPresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
         ButterKnife.bind(this);
 
         EventBus.getDefault().register(this);
+
+        PaymentPresenter paymentPresenter = PaymentPresenter.getInstance();
+        BankPresenter bankPresenter = BankPresenter.getInstance();
+        FeePresenter feePresenter = FeePresenter.getInstance();
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Roboto-Regular.ttf")

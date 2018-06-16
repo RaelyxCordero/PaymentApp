@@ -49,14 +49,14 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabNext"
+            android:id="@+id/fabDone"
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="30dp"
             android:layout_marginRight="30dp"
-            app:srcCompat="@drawable/ic_arrow_forward"
+            app:srcCompat="@drawable/ic_done"
             app:fabSize="normal" />
     </android.support.design.widget.CoordinatorLayout>
 

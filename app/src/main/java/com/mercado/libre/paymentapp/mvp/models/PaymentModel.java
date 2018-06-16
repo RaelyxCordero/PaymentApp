@@ -1,5 +1,7 @@
 package com.mercado.libre.paymentapp.mvp.models;
 
+import android.util.Log;
+
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.HttpCode;
 import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentModel;
@@ -34,7 +36,8 @@ public class PaymentModel {
     private void getPayments(ApiInterface service, String publicKey){
         final EventPaymentPresenter eventPresenter =
                 new EventPaymentPresenter(EventPaymentPresenter.MODEL_SUCCES_PAYMENTS_RESPONSE);
-        service.getPaymentMethod(publicKey)
+        Log.e("TAG", service.getPaymentMethod().request().url().toString());
+        service.getPaymentMethod()
         .enqueue(new Callback<ArrayList<PaymentMethodPojo>>() {
             @Override
             public void onResponse(Call<ArrayList<PaymentMethodPojo>> call,

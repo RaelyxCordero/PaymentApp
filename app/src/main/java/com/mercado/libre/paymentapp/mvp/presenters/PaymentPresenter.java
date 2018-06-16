@@ -4,6 +4,7 @@ import com.mercado.libre.paymentapp.mvp.models.PaymentModel;
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentModel;
 import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentPresenter;
+import com.mercado.libre.paymentapp.utils.events.views.PickPaymentFragEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,6 +40,9 @@ public class PaymentPresenter extends BasePresenter {
                 break;
 
             case EventPaymentPresenter.MODEL_SUCCES_PAYMENTS_RESPONSE:
+                EventBus.getDefault().post(
+                        new PickPaymentFragEvent(PickPaymentFragEvent.SHOW_PAYMENTS, event.getPaymentsList())
+                );
                 break;
 
             case EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE:

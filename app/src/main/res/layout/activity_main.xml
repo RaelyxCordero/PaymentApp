@@ -14,7 +14,7 @@
             android:id="@+id/tbIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_close"
+            app:srcCompat="@drawable/ic_close"
             android:layout_marginRight="10dp"/>
         <TextView
             android:id="@+id/tbTitle"

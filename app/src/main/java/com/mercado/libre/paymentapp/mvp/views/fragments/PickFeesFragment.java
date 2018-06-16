@@ -27,8 +27,8 @@ public class PickFeesFragment extends Fragment {
 
     @BindView(R.id.spnFees)
     MaterialSpinner spnFees;
-    @BindView(R.id.fabNext)
-    FloatingActionButton fabNext;
+    @BindView(R.id.fabDone)
+    FloatingActionButton fabDone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +51,9 @@ public class PickFeesFragment extends Fragment {
         super.onDestroyView();
     }
 
-    @OnClick(R.id.fabNext)
+    @OnClick(R.id.fabDone)
     public void onViewClicked() {
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
-        Navigation.findNavController(fabNext).navigate(R.id.addAmountFragment);
+        Navigation.findNavController(fabDone).navigate(R.id.addAmountFragment);
     }
 }

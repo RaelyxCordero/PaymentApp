@@ -52,7 +52,10 @@ public class AddAmountFragment extends Fragment {
 
     @OnClick(R.id.fabNext)
     public void onViewClicked() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("amount", Integer.valueOf(tvAmount.getText().toString()));
+
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
-        Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment);
+        Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
     }
 }

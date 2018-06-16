@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mercado.libre.paymentapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".mvp.views.PaymentApplication"
         android:allowBackup="true"

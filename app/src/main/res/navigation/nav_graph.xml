@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_pickPaymentFragment_to_pickBankFragment"
             app:destination="@id/pickBankFragment" />
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:type="integer" />
     </fragment>
     <fragment
         android:id="@+id/pickBankFragment"

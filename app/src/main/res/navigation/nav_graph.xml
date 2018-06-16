@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/addAmountFragment">
+
+    <fragment
+        android:id="@+id/addAmountFragment"
+        android:name="com.mercado.libre.paymentapp.mvp.views.fragments.AddAmountFragment"
+        android:label="fragment_add_amount"
+        tools:layout="@layout/fragment_add_amount" >
+        <action
+            android:id="@+id/action_addAmountFragment_to_pickPaymentFragment"
+            app:destination="@id/pickPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pickPaymentFragment"
+        android:name="com.mercado.libre.paymentapp.mvp.views.fragments.PickPaymentFragment"
+        android:label="fragment_pick_payment"
+        tools:layout="@layout/fragment_pick_payment" >
+        <action
+            android:id="@+id/action_pickPaymentFragment_to_pickBankFragment"
+            app:destination="@id/pickBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pickBankFragment"
+        android:name="com.mercado.libre.paymentapp.mvp.views.fragments.PickBankFragment"
+        android:label="fragment_pick_bank"
+        tools:layout="@layout/fragment_pick_bank" >
+        <action
+            android:id="@+id/action_pickBankFragment_to_pickFeesFragment2"
+            app:destination="@id/pickFeesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pickFeesFragment"
+        android:name="com.mercado.libre.paymentapp.mvp.views.fragments.PickFeesFragment"
+        android:label="fragment_pick_fees"
+        tools:layout="@layout/fragment_pick_fees" >
+        <action
+            android:id="@+id/action_pickFeesFragment_to_addAmountFragment2"
+            app:destination="@id/addAmountFragment" />
+    </fragment>
+</navigation>

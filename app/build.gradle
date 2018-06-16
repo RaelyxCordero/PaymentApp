@@ -1,14 +1,16 @@
 apply plugin: 'com.android.application'
+apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.mercado.libre.paymentapp"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -16,17 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+//    android.defaultConfig.vectorDrawables.useSupportLibrary = true
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //support
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     //test
@@ -39,6 +38,17 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation "android.arch.navigation:navigation-fragment:1.0.0-alpha02"
+    implementation "android.arch.navigation:navigation-ui:1.0.0-alpha02"
+    implementation "android.arch.work:work-runtime:1.0.0-alpha02"
+    implementation "android.arch.work:work-firebase:1.0.0-alpha02"
+
+    androidTestImplementation "android.arch.work:work-testing:1.0.0-alpha02"
+    androidTestImplementation "android.arch.navigation:navigation-testing:1.0.0-alpha02"
+
     implementation ('com.github.ganfra:material-spinner:2.0.0'){
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }

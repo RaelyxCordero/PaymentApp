@@ -22,20 +22,15 @@ public interface ApiInterface {
     Call<ArrayList<PaymentMethodPojo>>
     getPaymentMethod(/*@Field("public_key") String publicKey*/);
 
-    @GET("/payment_methods/card_issuers?{public_key}&{payment_method_id}")
+    @GET("/payment_methods/card_issuers?public_key=444a9ef5-8a6b-429f-abdf-587639155d88")
     Call<ArrayList<BancoPojo>>
-    getBankByPaymentMethodId(@Path("public_key") String publicKey,
-                             @Path("payment_method_id") String paymentMethodId);
+    getBankByPaymentMethodId(@Query("payment_method_id") String paymentMethodId);
 
-    @GET("/payment_methods/installments?{public_key}" +
-            "&{amount}" +
-            "&{payment_method_id}" +
-            "&{issuer.id}")
+    @GET("/payment_methods/installments?public_key=444a9ef5-8a6b-429f-abdf-587639155d88")
     Call<ArrayList<ResponseFeesPojo>>
-    getFees(@Path("public_key") String publicKey,
-            @Path("amount") Integer amount,
-            @Path("payment_method_id") String paymentMethodId,
-            @Path("issuer.id") String idIssuer
+    getFees(@Query("amount") Integer amount,
+            @Query("payment_method_id") String paymentMethodId,
+            @Query("issuer.id") String idIssuer
     );
 
 

@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_add_amount" >
         <action
             android:id="@+id/action_addAmountFragment_to_pickPaymentFragment"
-            app:destination="@id/pickPaymentFragment" />
+            app:destination="@id/pickPaymentFragment"
+            app:enterAnim="@anim/right_in"
+            app:exitAnim="@anim/left_out"
+            app:popEnterAnim="@anim/left_in"
+            app:popExitAnim="@anim/right_out"/>
     </fragment>
     <fragment
         android:id="@+id/pickPaymentFragment"
@@ -21,7 +25,11 @@
         tools:layout="@layout/fragment_pick_payment" >
         <action
             android:id="@+id/action_pickPaymentFragment_to_pickBankFragment"
-            app:destination="@id/pickBankFragment" />
+            app:destination="@id/pickBankFragment"
+            app:enterAnim="@anim/right_in"
+            app:exitAnim="@anim/left_out"
+            app:popEnterAnim="@anim/left_in"
+            app:popExitAnim="@anim/right_out"/>
         <argument
             android:name="amount"
             android:defaultValue="0"
@@ -34,7 +42,19 @@
         tools:layout="@layout/fragment_pick_bank" >
         <action
             android:id="@+id/action_pickBankFragment_to_pickFeesFragment2"
-            app:destination="@id/pickFeesFragment" />
+            app:destination="@id/pickFeesFragment"
+            app:enterAnim="@anim/right_in"
+            app:exitAnim="@anim/left_out"
+            app:popEnterAnim="@anim/left_in"
+            app:popExitAnim="@anim/right_out"/>
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:type="integer" />
+        <argument
+            android:name="paymentId"
+            android:defaultValue='no_id'
+            app:type="string" />
     </fragment>
     <fragment
         android:id="@+id/pickFeesFragment"
@@ -43,6 +63,22 @@
         tools:layout="@layout/fragment_pick_fees" >
         <action
             android:id="@+id/action_pickFeesFragment_to_addAmountFragment2"
-            app:destination="@id/addAmountFragment" />
+            app:destination="@id/addAmountFragment"
+            app:enterAnim="@anim/right_in"
+            app:exitAnim="@anim/left_out"
+            app:popEnterAnim="@anim/left_in"
+            app:popExitAnim="@anim/right_out"/>
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:type="integer" />
+        <argument
+            android:name="paymentId"
+            android:defaultValue='no_id'
+            app:type="string" />
+        <argument
+            android:name="bankId"
+            android:defaultValue='no_id'
+            app:type="string" />
     </fragment>
 </navigation>

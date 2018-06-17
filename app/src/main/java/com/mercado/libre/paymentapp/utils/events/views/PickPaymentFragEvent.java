@@ -17,6 +17,10 @@ public class PickPaymentFragEvent {
         this.paymentMethods = paymentMethods;
     }
 
+    public PickPaymentFragEvent(int eventType) {
+        this.eventType = eventType;
+    }
+
     public int getEventType() {
         return eventType;
     }

@@ -39,7 +39,7 @@ public class FeeModel {
         final EventFeePresenter eventPresenter = new EventFeePresenter(
                 EventFeePresenter.MODEL_SUCCES_FEES_RESPONSE);
 
-        service.getFees(publicKey, amount, paymentId, issuerId)
+        service.getFees(amount, paymentId, issuerId)
         .enqueue(new Callback<ArrayList<ResponseFeesPojo>>() {
             @Override
             public void onResponse(Call<ArrayList<ResponseFeesPojo>> call, Response<ArrayList<ResponseFeesPojo>> response) {

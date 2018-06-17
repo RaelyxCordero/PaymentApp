@@ -49,6 +49,7 @@ public class PickFeesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.fabDone)

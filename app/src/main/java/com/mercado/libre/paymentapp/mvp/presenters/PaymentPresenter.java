@@ -46,6 +46,9 @@ public class PaymentPresenter extends BasePresenter {
                 break;
 
             case EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE:
+                EventBus.getDefault().post(
+                        new PickPaymentFragEvent(PickPaymentFragEvent.SHOW_ERROR_MESSAGE)
+                );
                 break;
 
         }

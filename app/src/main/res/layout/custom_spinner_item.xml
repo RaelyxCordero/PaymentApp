@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="80dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:text="Banco"
+        android:text="Mercado Pago + Banco Patagonia"
         android:textSize="18sp"
         android:textColor="@color/colorSecondaryText" />
 </LinearLayout>

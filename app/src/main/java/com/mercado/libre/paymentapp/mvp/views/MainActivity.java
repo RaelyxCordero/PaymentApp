@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @OnClick(R.id.tbIcon)
     public void onViewClicked() {

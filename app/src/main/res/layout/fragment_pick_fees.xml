@@ -21,8 +21,8 @@
 
     <fr.ganfra.materialspinner.MaterialSpinner
         android:id="@+id/spnFees"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -31,18 +31,18 @@
         app:layout_constraintVertical_bias="0.526"
         app:layout_editor_absoluteX="50dp"
         app:layout_editor_absoluteY="183dp"
-        app:ms_alignLabels="false"
+        app:ms_alignLabels="true"
         app:ms_arrowColor="@color/colorSecondaryText"
         app:ms_baseColor="@color/colorSecondaryText"
         app:ms_dropDownHintView="@android:layout/simple_dropdown_item_1line"
-        app:ms_enableErrorLabel="false"
+        app:ms_enableErrorLabel="true"
         app:ms_enableFloatingLabel="true"
         app:ms_floatingLabelColor="@color/colorSecondaryText"
-        app:ms_floatingLabelText="Cuotas"
-        app:ms_hint="Cuotas"
+        app:ms_floatingLabelText="Medio de pago"
+        app:ms_hint="Medio de pago"
         app:ms_hintColor="@color/colorSecondaryText"
-        app:ms_multiline="false"
-        app:ms_typeface="@string/font_default" />
+        app:ms_multiline="true"
+        app:ms_typeface="@string/font_default"/>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

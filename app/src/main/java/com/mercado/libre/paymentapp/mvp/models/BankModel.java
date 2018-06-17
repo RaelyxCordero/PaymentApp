@@ -1,5 +1,7 @@
 package com.mercado.libre.paymentapp.mvp.models;
 
+import android.util.Log;
+
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.HttpCode;
 import com.mercado.libre.paymentapp.utils.events.bank.EventBankModel;
@@ -35,7 +37,8 @@ public class BankModel {
         final EventBankPresenter eventPresenter =
                 new EventBankPresenter(EventBankPresenter.MODEL_SUCCES_BANK_RESPONSE);
 
-        service.getBankByPaymentMethodId(publicKey, paymentId)
+        Log.e("TAG", service.getBankByPaymentMethodId(paymentId).request().url().toString());
+        service.getBankByPaymentMethodId(paymentId)
         .enqueue(new Callback<ArrayList<BancoPojo>>() {
             @Override
             public void onResponse(Call<ArrayList<BancoPojo>> call,

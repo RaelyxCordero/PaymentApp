@@ -4,6 +4,7 @@ import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.events.bank.EventBankModel;
 import com.mercado.libre.paymentapp.utils.events.bank.EventBankPresenter;
 import com.mercado.libre.paymentapp.mvp.models.BankModel;
+import com.mercado.libre.paymentapp.utils.events.views.PickBankFragEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -40,9 +41,15 @@ public class BankPresenter extends BasePresenter {
                 break;
 
             case EventBankPresenter.MODEL_SUCCES_BANK_RESPONSE:
+                EventBus.getDefault().post(
+                        new PickBankFragEvent(PickBankFragEvent.SHOW_BANKS, eventBank.getBanksList())
+                );
                 break;
 
             case EventBankPresenter.MODEL_FAILURE_BANK_RESPONSE:
+                EventBus.getDefault().post(
+                        new PickBankFragEvent(PickBankFragEvent.SHOW_ERROR_MESSAGE)
+                );
                 break;
 
         }

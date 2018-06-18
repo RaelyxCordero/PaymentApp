@@ -1,6 +1,7 @@
 package com.mercado.libre.paymentapp.mvp.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -57,6 +60,20 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (!getArguments().getString("paymentId").equals("no_id")){
+
+            String message = "Se ha realizado exitosamente el pago por: " + getArguments().getInt("amount") +"CLP"
+                    + "\n usando: " + getArguments().getString("paymentId")
+                    + "\n con el banco: " + getArguments().getString("bankId")
+                    + "\n siendo: " + getArguments().getString("payerCosts")
+                    ;
+            showDialogPayFinishedMessage(R.string.success, message);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
@@ -69,17 +86,21 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
 
     @Override
     public void onValidationSucceeded() {
-        int amount = Integer.valueOf(tvAmount.getText().toString());
+        try{
+            int amount = Integer.valueOf(tvAmount.getText().toString());
+            if (amount > 0 && amount <= 250000){
+                Bundle bundle = new Bundle();
+                bundle.putInt("amount", amount);
 
-        if (amount > 0 && amount < 250000){
-            Bundle bundle = new Bundle();
-            bundle.putInt("amount", amount);
-
-            EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
-            Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
-        }else {
-            tvAmount.setError("El monto debe ser mayor a 0 y menor a 250.000");
+                EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
+                Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
+            }else {
+                tvAmount.setError("El monto debe ser mayor a 0 y menor a 250.000");
+            }
+        }catch (NumberFormatException e){
+            tvAmount.setError("Ingrese un monto entero");
         }
+
 
     }
 
@@ -97,5 +118,19 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void showDialogPayFinishedMessage(int tittle, String message){
+        new MaterialDialog.Builder(getContext())
+                .title(tittle)
+                .content(message)
+                .positiveText(R.string.accept)
+                .onAny(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 }

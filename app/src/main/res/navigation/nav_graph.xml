@@ -17,6 +17,22 @@
             app:exitAnim="@anim/left_out"
             app:popEnterAnim="@anim/left_in"
             app:popExitAnim="@anim/right_out"/>
+        <argument
+            android:name="amount"
+            android:defaultValue="0"
+            app:type="integer" />
+        <argument
+            android:name="paymentId"
+            android:defaultValue='no_id'
+            app:type="string" />
+        <argument
+            android:name="bankId"
+            android:defaultValue='no_id'
+            app:type="string" />
+        <argument
+            android:name="payerCosts"
+            android:defaultValue='no_payer'
+            app:type="string" />
     </fragment>
     <fragment
         android:id="@+id/pickPaymentFragment"

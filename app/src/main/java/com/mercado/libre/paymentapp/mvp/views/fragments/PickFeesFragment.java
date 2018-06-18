@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -18,6 +19,7 @@ import com.mercado.libre.paymentapp.utils.events.presenters.EventFeePresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickFeeFragEvent;
 import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
+import com.mercado.libre.paymentapp.utils.pojoModels.ResponseFeesPojo;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Select;
@@ -50,6 +52,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
     FloatingActionButton fabDone;
     private Validator validator;
     private MaterialDialog materialProgressDialog;
+    private PayerCost pojo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,7 +141,8 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        if (position != -1)
+            pojo = (PayerCost) parent.getItemAtPosition(position);
     }
 
     @Override
@@ -148,13 +152,30 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onValidationSucceeded() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("amount", getArguments().getInt("amount"));
+        bundle.putString("paymentId", getArguments().getString("paymentId"));
+        bundle.putString("bankId", getArguments().getString("bankId"));
+        bundle.putString("payerCosts", pojo.getRecommendedMessage());
+
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
-        Navigation.findNavController(fabDone).navigate(R.id.addAmountFragment);
+        Navigation.findNavController(fabDone).navigate(R.id.addAmountFragment, bundle);
     }
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getContext());
 
+            // Display error messages ;)
+            if (view instanceof MaterialSpinner) {
+                ((MaterialSpinner) view).setError(message);
+
+            } else {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

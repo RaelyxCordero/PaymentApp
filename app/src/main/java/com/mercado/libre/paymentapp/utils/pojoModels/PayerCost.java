@@ -42,6 +42,8 @@ public class PayerCost {
     @Expose
     private double totalAmount;
 
+    private int feeResponsePosition;
+
     /**
      * No args constructor for use in serialization
      * 

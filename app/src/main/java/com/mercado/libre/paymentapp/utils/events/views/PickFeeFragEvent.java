@@ -2,6 +2,7 @@ package com.mercado.libre.paymentapp.utils.events.views;
 
 import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
 import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
+import com.mercado.libre.paymentapp.utils.pojoModels.ResponseFeesPojo;
 
 import java.util.ArrayList;
 

@@ -50,6 +50,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     FloatingActionButton fabNext;
     private Validator validator;
     private MaterialDialog materialProgressDialog;
+    private PaymentMethodPojo pojo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,8 +118,8 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
-
+        if (position != -1)
+            pojo = (PaymentMethodPojo) parent.getItemAtPosition(position);
     }
 
     @Override
@@ -151,9 +152,6 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
     @Override
     public void onValidationSucceeded() {
-        PaymentMethodPojo pojo = (PaymentMethodPojo) spnPayment.getAdapter()
-                .getItem(spnPayment.getSelectedItemPosition());
-
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));
         bundle.putString("paymentId", pojo.getId());

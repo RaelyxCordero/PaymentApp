@@ -57,7 +57,7 @@ public class FeePresenter extends BasePresenter {
                 }
 
                 response.setPayerFees(payerFees);
-                if (!payerFees.isEmpty())
+                if (!event.getFeesList().isEmpty())
                     response.setEventType(PickFeeFragEvent.SHOW_FEES);
                 else{
                     response.setEventType(PickFeeFragEvent.SHOW_EMPTY_LIST_MESSAGE);

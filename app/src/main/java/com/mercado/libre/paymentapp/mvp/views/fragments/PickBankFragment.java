@@ -50,6 +50,7 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
     FloatingActionButton fabNext;
     private Validator validator;
     private MaterialDialog materialProgressDialog;
+    private BancoPojo pojo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,8 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position != -1)
+            pojo = (BancoPojo) parent.getItemAtPosition(position);
     }
 
     @Override
@@ -130,10 +133,6 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
 
     @Override
     public void onValidationSucceeded() {
-        BancoPojo pojo = (BancoPojo) spnBank.getAdapter()
-                .getItem(spnBank.getSelectedItemPosition());
-
-        Log.e("TAG", pojo.toString());
 
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));

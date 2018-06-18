@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.HttpCode;
-import com.mercado.libre.paymentapp.utils.events.bank.EventBankModel;
-import com.mercado.libre.paymentapp.utils.events.bank.EventBankPresenter;
+import com.mercado.libre.paymentapp.utils.events.models.EventBankModel;
+import com.mercado.libre.paymentapp.utils.events.presenters.EventBankPresenter;
 import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,20 +37,25 @@ public class BankModel {
         final EventBankPresenter eventPresenter =
                 new EventBankPresenter(EventBankPresenter.MODEL_SUCCES_BANK_RESPONSE);
 
-        Log.e("TAG", service.getBankByPaymentMethodId(paymentId).request().url().toString());
-        service.getBankByPaymentMethodId(paymentId)
+        Log.e("TAG", service.getBankByPaymentMethodId(publicKey, paymentId).request().url().toString());
+        service.getBankByPaymentMethodId(publicKey, paymentId)
         .enqueue(new Callback<ArrayList<BancoPojo>>() {
             @Override
             public void onResponse(Call<ArrayList<BancoPojo>> call,
                                    Response<ArrayList<BancoPojo>> response) {
+
                 switch (response.code()){
 
                     case HttpCode.CODE_200_SUCCESSFUL:
                     case HttpCode.CODE_201_SUCCESSFUL:
+
                         eventPresenter.setBanksList(response.body());
                         EventBus.getDefault().post(eventPresenter);
                         break;
-                    case HttpCode.CODE_500_SERVER_ERROR:
+
+                    default:
+                        eventPresenter.setResponseCode(response.code());
+                        eventPresenter.setResponseMessage(response.message());
                         eventPresenter.setEventType(EventBankPresenter.MODEL_FAILURE_BANK_RESPONSE);
                         EventBus.getDefault().post(eventPresenter);
                         break;
@@ -60,6 +65,8 @@ public class BankModel {
 
             @Override
             public void onFailure(Call<ArrayList<BancoPojo>> call, Throwable t) {
+                eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
+                eventPresenter.setResponseMessage(t.getMessage());
                 eventPresenter.setEventType(EventBankPresenter.MODEL_FAILURE_BANK_RESPONSE);
                 EventBus.getDefault().post(eventPresenter);
             }

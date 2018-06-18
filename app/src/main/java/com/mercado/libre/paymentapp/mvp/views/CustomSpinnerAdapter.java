@@ -11,15 +11,17 @@ import android.widget.TextView;
 
 import com.mercado.libre.paymentapp.R;
 import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
+import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
 import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class CustomSpinnerAdapter extends BaseAdapter {
+    //TODO: heritance of spinner adapter
+
     private Context context;
     private ArrayList objects;
-
     private LayoutInflater inflater;
 
     public CustomSpinnerAdapter(Context applicationContext, ArrayList objects) {
@@ -69,6 +71,15 @@ public class CustomSpinnerAdapter extends BaseAdapter {
                     .into(icon);
 
             names.setText(pojo.getName());
+
+        }else if (objects.get(i) instanceof PayerCost){
+            PayerCost pojo = (PayerCost) objects.get(i);
+            Picasso.get()
+                    .load(R.drawable.ic_dollar)
+                    .placeholder(R.drawable.ic_round_hourglass)
+                    .error(R.drawable.ic_image_error)
+                    .into(icon);
+            names.setText(pojo.getRecommendedMessage());
         }
 
 

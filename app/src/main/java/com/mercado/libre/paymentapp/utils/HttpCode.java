@@ -29,6 +29,7 @@ public class HttpCode {
     public static final int CODE_308_REDIRECTION = 308; // Resume Incomplete
 
     // Client Error
+    public static final int CODE_NO_RESPONSE_ERROR = 0;  // No response, no connection
     public static final int CODE_400_CLIENT_ERROR = 400; // Bad Request
     public static final int CODE_401_CLIENT_ERROR = 401; // Unauthorized
     public static final int CODE_402_CLIENT_ERROR = 402; // Payment Required

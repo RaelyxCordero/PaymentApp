@@ -1,12 +1,11 @@
 package com.mercado.libre.paymentapp.mvp.models;
 
+import android.util.Log;
+
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.HttpCode;
-import com.mercado.libre.paymentapp.utils.events.fees.EventFeeModel;
-import com.mercado.libre.paymentapp.utils.events.fees.EventFeePresenter;
-import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentModel;
-import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentPresenter;
-import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
+import com.mercado.libre.paymentapp.utils.events.models.EventFeeModel;
+import com.mercado.libre.paymentapp.utils.events.presenters.EventFeePresenter;
 import com.mercado.libre.paymentapp.utils.pojoModels.ResponseFeesPojo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,10 +38,12 @@ public class FeeModel {
         final EventFeePresenter eventPresenter = new EventFeePresenter(
                 EventFeePresenter.MODEL_SUCCES_FEES_RESPONSE);
 
-        service.getFees(amount, paymentId, issuerId)
+        Log.e("TAG", service.getFees(publicKey, amount, paymentId, issuerId).request().url().toString());
+        service.getFees(publicKey, amount, paymentId, issuerId)
         .enqueue(new Callback<ArrayList<ResponseFeesPojo>>() {
             @Override
-            public void onResponse(Call<ArrayList<ResponseFeesPojo>> call, Response<ArrayList<ResponseFeesPojo>> response) {
+            public void onResponse(Call<ArrayList<ResponseFeesPojo>> call,
+                                   Response<ArrayList<ResponseFeesPojo>> response) {
                 switch (response.code()){
 
                     case HttpCode.CODE_200_SUCCESSFUL:
@@ -51,8 +52,10 @@ public class FeeModel {
                         EventBus.getDefault().post(eventPresenter);
                         break;
 
-                    case HttpCode.CODE_500_SERVER_ERROR:
-                        eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
+                    default:
+                        eventPresenter.setResponseCode(response.code());
+                        eventPresenter.setResponseMessage(response.message());
+                        eventPresenter.setEventType(EventFeePresenter.MODEL_FAILURE_FEES_RESPONSE);
                         EventBus.getDefault().post(eventPresenter);
                         break;
                 }
@@ -60,7 +63,9 @@ public class FeeModel {
 
             @Override
             public void onFailure(Call<ArrayList<ResponseFeesPojo>> call, Throwable t) {
-                eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
+                eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
+                eventPresenter.setResponseMessage(t.getMessage());
+                eventPresenter.setEventType(EventFeePresenter.MODEL_FAILURE_FEES_RESPONSE);
                 EventBus.getDefault().post(eventPresenter);
             }
         });

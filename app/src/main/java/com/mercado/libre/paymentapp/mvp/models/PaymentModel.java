@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 import com.mercado.libre.paymentapp.utils.HttpCode;
-import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentModel;
-import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentPresenter;
+import com.mercado.libre.paymentapp.utils.events.models.EventPaymentModel;
+import com.mercado.libre.paymentapp.utils.events.presenters.EventPaymentPresenter;
 import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,8 +36,8 @@ public class PaymentModel {
     private void getPayments(ApiInterface service, String publicKey){
         final EventPaymentPresenter eventPresenter =
                 new EventPaymentPresenter(EventPaymentPresenter.MODEL_SUCCES_PAYMENTS_RESPONSE);
-        Log.e("TAG", service.getPaymentMethod().request().url().toString());
-        service.getPaymentMethod()
+        Log.e("TAG", service.getPaymentMethod(publicKey).request().url().toString());
+        service.getPaymentMethod(publicKey)
         .enqueue(new Callback<ArrayList<PaymentMethodPojo>>() {
             @Override
             public void onResponse(Call<ArrayList<PaymentMethodPojo>> call,
@@ -51,7 +51,9 @@ public class PaymentModel {
                         EventBus.getDefault().post(eventPresenter);
                         break;
 
-                    case HttpCode.CODE_500_SERVER_ERROR:
+                    default:
+                        eventPresenter.setResponseCode(response.code());
+                        eventPresenter.setResponseMessage(response.message());
                         eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
                         EventBus.getDefault().post(eventPresenter);
                         break;
@@ -60,6 +62,8 @@ public class PaymentModel {
 
             @Override
             public void onFailure(Call<ArrayList<PaymentMethodPojo>> call, Throwable t) {
+                eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
+                eventPresenter.setResponseMessage(t.getMessage());
                 eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
                 EventBus.getDefault().post(eventPresenter);
             }

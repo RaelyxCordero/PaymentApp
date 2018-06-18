@@ -1,18 +1,21 @@
 package com.mercado.libre.paymentapp.mvp.views.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
 import com.mercado.libre.paymentapp.mvp.views.CustomSpinnerAdapter;
-import com.mercado.libre.paymentapp.utils.events.payment.EventPaymentPresenter;
+import com.mercado.libre.paymentapp.utils.events.presenters.EventPaymentPresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickPaymentFragEvent;
 import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
@@ -38,14 +41,15 @@ import fr.ganfra.materialspinner.MaterialSpinner;
  */
 
 public class PickPaymentFragment extends Fragment implements AdapterView.OnItemSelectedListener,
-        Validator.ValidationListener{
-
+        Validator.ValidationListener, MaterialDialog.SingleButtonCallback {
+    //TODO: Onsave instance selected item and save instance on back
     @Select(message = "Debe seleccionar un medio de pago")
     @BindView(R.id.spnPayment)
     MaterialSpinner spnPayment;
     @BindView(R.id.fabNext)
     FloatingActionButton fabNext;
     private Validator validator;
+    private MaterialDialog materialProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
         spnPayment.setOnItemSelectedListener(this);
         EventBus.getDefault().register(this);
+        progressbarVisibility(true);
         EventBus.getDefault().post(new EventPaymentPresenter(EventPaymentPresenter.UI_GET_PAYMENTS));
 
 
@@ -73,6 +78,30 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     public void loadSpinner(ArrayList<PaymentMethodPojo> paymentMethods){
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(getContext(), paymentMethods);
         spnPayment.setAdapter(customSpinnerAdapter);
+        progressbarVisibility(false);
+    }
+
+    public void progressbarVisibility(boolean visible) {
+        if (materialProgressDialog == null) {
+            materialProgressDialog = new MaterialDialog.Builder(getContext())
+                    .title("")
+                    .content(R.string.please_wait)
+                    .progress(true, 0)
+                    .cancelable(false)
+
+                    .build();
+        }
+
+        if (visible) {
+            materialProgressDialog = materialProgressDialog
+                    .getBuilder()
+                    .title("")
+                    .content(R.string.please_wait)
+                    .show();
+
+        } else {
+            materialProgressDialog.dismiss();
+        }
     }
 
     @Override
@@ -106,7 +135,15 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
                 break;
 
             case PickPaymentFragEvent.SHOW_ERROR_MESSAGE:
-                Toast.makeText(getContext(), "error en la consulta", Toast.LENGTH_SHORT).show();
+                progressbarVisibility(false);
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.error)
+                        .content(event.getCustomMessage())
+                        .positiveText(R.string.accept)
+                        .onAny(this)
+                        .show();
+
+                Log.e("TAG", event.getResponseCode() + " " + event.getResponseMessage());
                 break;
 
         }
@@ -120,6 +157,8 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));
         bundle.putString("paymentId", pojo.getId());
+
+        Log.e("TAG", bundle.getString("paymentId") + ", " + bundle.getInt("amount"));
 
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
         Navigation.findNavController(fabNext).navigate(R.id.pickBankFragment, bundle);
@@ -139,5 +178,11 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+
+    @Override
+    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+        getActivity().onBackPressed();
     }
 }

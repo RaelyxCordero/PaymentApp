@@ -172,6 +172,25 @@ public class PaymentMethodPojo {
         this.processingModes = processingModes;
     }
 
+    @Override
+    public String toString() {
+        return "PaymentMethodPojo{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", paymentTypeId='" + paymentTypeId + '\'' +
+                ", status='" + status + '\'' +
+                ", secureThumbnail='" + secureThumbnail + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", deferredCapture='" + deferredCapture + '\'' +
+                ", settings=" + settings +
+                ", additionalInfoNeeded=" + additionalInfoNeeded +
+                ", minAllowedAmount=" + minAllowedAmount +
+                ", maxAllowedAmount=" + maxAllowedAmount +
+                ", accreditationTime=" + accreditationTime +
+                ", financialInstitutions=" + financialInstitutions +
+                ", processingModes=" + processingModes +
+                '}';
+    }
 }
 
 

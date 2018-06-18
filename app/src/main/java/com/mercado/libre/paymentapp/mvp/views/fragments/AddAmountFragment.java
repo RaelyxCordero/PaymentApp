@@ -69,11 +69,18 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
 
     @Override
     public void onValidationSucceeded() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("amount", Integer.valueOf(tvAmount.getText().toString()));
+        int amount = Integer.valueOf(tvAmount.getText().toString());
 
-        EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
-        Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
+        if (amount > 0 && amount < 250000){
+            Bundle bundle = new Bundle();
+            bundle.putInt("amount", amount);
+
+            EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
+            Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
+        }else {
+            tvAmount.setError("El monto debe ser mayor a 0 y menor a 250.000");
+        }
+
     }
 
     @Override

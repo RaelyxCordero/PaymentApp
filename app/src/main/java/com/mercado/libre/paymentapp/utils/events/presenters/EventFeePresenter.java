@@ -1,4 +1,4 @@
-package com.mercado.libre.paymentapp.utils.events.fees;
+package com.mercado.libre.paymentapp.utils.events.presenters;
 
 import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
 import com.mercado.libre.paymentapp.utils.pojoModels.ResponseFeesPojo;
@@ -15,7 +15,8 @@ public class EventFeePresenter {
     public static final int MODEL_FAILURE_FEES_RESPONSE = 2;
 
     private int eventType;
-
+    private int responseCode;
+    private String responseMessage;
     private String paymentMethodId;
     private String issuerId;
     private int amount;
@@ -23,6 +24,13 @@ public class EventFeePresenter {
 
     public EventFeePresenter(int eventType) {
         this.eventType = eventType;
+    }
+
+    public EventFeePresenter(int eventType, String paymentMethodId, String issuerId, int amount) {
+        this.eventType = eventType;
+        this.paymentMethodId = paymentMethodId;
+        this.issuerId = issuerId;
+        this.amount = amount;
     }
 
     public int getEventType() {
@@ -63,5 +71,21 @@ public class EventFeePresenter {
 
     public void setFeesList(ArrayList<ResponseFeesPojo> feesList) {
         this.feesList = feesList;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public String getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
     }
 }

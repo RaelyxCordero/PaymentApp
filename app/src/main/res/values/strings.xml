@@ -10,4 +10,23 @@
     <string name="title_pick_payment">Seleccione un Medio de Pago</string>
     <string name="title_pick_bank">Seleccione un Banco</string>
     <string name="title_pick_fee">Seleccione una Cantidad de Cuotas</string>
+
+    <!-- TITLE DIALOGS -->
+    <string name="error">Error</string>
+    <string name="accept">Aceptar</string>
+    <string name="information">Información</string>
+    <string name="warning">Advertencia</string>
+    <string name="problems">Problemas</string>
+    <string name="cancel">Cancelar</string>
+    <string name="please_wait">Por favor espere</string>
+    <string name="unauthorized">No autorizado</string>
+    <string name="success">Exitoso</string>
+    <string name="add">Agregar</string>
+    <string name="invalid_phone">Teléfono inválido</string>
+
+    <!--DIALOGS MESSAGES-->
+    <string name="dialog_error_500">Ha ocurrido un error, intente de nuevo más tarde</string>
+    <string name="dialog_error_no_connection">Ha ocurrido un error, revise su conexión a internet</string>
+    <string name="dialog_empty_bank_list">El medio de pago seleccionado no tiene bancos disponibles, seleccione otro</string>
+    <string name="dialog_empty_payer_list">No existen cuotas disponibles para las condiciones seleccionadas</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.mercado.libre.paymentapp.utils.events.payment;
+package com.mercado.libre.paymentapp.utils.events.models;
 
 import com.mercado.libre.paymentapp.utils.ApiInterface;
 

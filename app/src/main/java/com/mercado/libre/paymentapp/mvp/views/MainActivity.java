@@ -34,7 +34,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements NavHost, NavController.OnNavigatedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-
+//TODO: Onsave instance toolbar icon and state
     @BindView(R.id.tbIcon)
     ImageView tbIcon;
     @BindView(R.id.tbTitle)

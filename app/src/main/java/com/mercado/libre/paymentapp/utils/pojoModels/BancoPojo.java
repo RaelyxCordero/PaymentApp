@@ -102,5 +102,16 @@ public class BancoPojo {
         this.merchantAccountId = merchantAccountId;
     }
 
+    @Override
+    public String toString() {
+        return "BancoPojo{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", secureThumbnail='" + secureThumbnail + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", processingMode='" + processingMode + '\'' +
+                ", merchantAccountId=" + merchantAccountId +
+                '}';
+    }
 }
 

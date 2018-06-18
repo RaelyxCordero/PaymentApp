@@ -13,13 +13,13 @@ public class PayerCost {
 
     @SerializedName("installments")
     @Expose
-    private int installments;
+    private double installments;
     @SerializedName("installment_rate")
     @Expose
     private double installmentRate;
     @SerializedName("discount_rate")
     @Expose
-    private int discountRate;
+    private double discountRate;
     @SerializedName("labels")
     @Expose
     private List<String> labels = null;
@@ -37,10 +37,10 @@ public class PayerCost {
     private String recommendedMessage;
     @SerializedName("installment_amount")
     @Expose
-    private int installmentAmount;
+    private double installmentAmount;
     @SerializedName("total_amount")
     @Expose
-    private int totalAmount;
+    private double totalAmount;
 
     /**
      * No args constructor for use in serialization
@@ -76,7 +76,7 @@ public class PayerCost {
         this.totalAmount = totalAmount;
     }
 
-    public int getInstallments() {
+    public double getInstallments() {
         return installments;
     }
 
@@ -92,7 +92,7 @@ public class PayerCost {
         this.installmentRate = installmentRate;
     }
 
-    public int getDiscountRate() {
+    public double getDiscountRate() {
         return discountRate;
     }
 
@@ -140,7 +140,7 @@ public class PayerCost {
         this.recommendedMessage = recommendedMessage;
     }
 
-    public int getInstallmentAmount() {
+    public double getInstallmentAmount() {
         return installmentAmount;
     }
 
@@ -148,7 +148,7 @@ public class PayerCost {
         this.installmentAmount = installmentAmount;
     }
 
-    public int getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 

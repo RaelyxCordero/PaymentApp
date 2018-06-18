@@ -1,4 +1,4 @@
-package com.mercado.libre.paymentapp.utils.events.payment;
+package com.mercado.libre.paymentapp.utils.events.presenters;
 
 import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
 import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
@@ -18,6 +18,8 @@ public class EventPaymentPresenter {
 
     private String paymentMethodId;
     private ArrayList<PaymentMethodPojo> paymentsList;
+    private int responseCode;
+    private String responseMessage;
 
     public EventPaymentPresenter(int eventType) {
         this.eventType = eventType;
@@ -45,5 +47,21 @@ public class EventPaymentPresenter {
 
     public void setPaymentsList(ArrayList<PaymentMethodPojo> paymentsList) {
         this.paymentsList = paymentsList;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public String getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
     }
 }

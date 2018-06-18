@@ -1,38 +1,40 @@
 package com.mercado.libre.paymentapp.utils.events.views;
 
-import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
+import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
+import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
 
 import java.util.ArrayList;
 
-public class PickPaymentFragEvent {
-    public static final int SHOW_PAYMENTS = 0;
+public class PickFeeFragEvent {
+    public static final int SHOW_FEES= 0;
     public static final int SHOW_ERROR_MESSAGE = 1;
+    public static final int SHOW_EMPTY_LIST_MESSAGE = 2;
 
-    private ArrayList<PaymentMethodPojo> paymentMethods;
+    private ArrayList<PayerCost> payerFees;
     private int eventType;
     private int responseCode;
     private String responseMessage;
     private int customMessage;
 
-    public PickPaymentFragEvent(int eventType, ArrayList<PaymentMethodPojo> paymentMethods) {
+    public PickFeeFragEvent(int eventType, ArrayList<PayerCost> banks) {
         this.eventType = eventType;
-        this.paymentMethods = paymentMethods;
+        this.payerFees = banks;
     }
 
-    public PickPaymentFragEvent(int eventType) {
+    public PickFeeFragEvent(int eventType) {
         this.eventType = eventType;
+    }
+
+    public ArrayList<PayerCost> getPayerFees() {
+        return payerFees;
+    }
+
+    public void setPayerFees(ArrayList<PayerCost> payerFees) {
+        this.payerFees = payerFees;
     }
 
     public int getEventType() {
         return eventType;
-    }
-
-    public ArrayList<PaymentMethodPojo> getPaymentMethods() {
-        return paymentMethods;
-    }
-
-    public void setPaymentMethods(ArrayList<PaymentMethodPojo> paymentMethods) {
-        this.paymentMethods = paymentMethods;
     }
 
     public void setEventType(int eventType) {

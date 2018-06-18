@@ -76,23 +76,16 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
 
     @OnClick(R.id.tbIcon)
     public void onViewClicked() {
-        if (tbBackStatus){
-            onBackPressed();
-            if (getNavController().getCurrentDestination().getId() == R.id.addAmountFragment){
-
-            }
-        }else {
-            finish();
-        }
-
-
-
-
+        onBackPressed();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (tbBackStatus){
+            super.onBackPressed();
+        }else {
+            finish();
+        }
     }
 
     @Override

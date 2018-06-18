@@ -14,7 +14,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
-import com.mercado.libre.paymentapp.mvp.views.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.PickBankSpinnerAdapter;
 import com.mercado.libre.paymentapp.utils.events.presenters.EventBankPresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickBankFragEvent;
@@ -81,7 +82,7 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     public void loadSpinner(ArrayList<BancoPojo> bancoPojos){
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(getContext(), bancoPojos);
+        PickBankSpinnerAdapter customSpinnerAdapter = new PickBankSpinnerAdapter(getContext(), bancoPojos);
         spnBank.setAdapter(customSpinnerAdapter);
         progressbarVisibility(false);
     }

@@ -14,7 +14,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
-import com.mercado.libre.paymentapp.mvp.views.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.PickPaymentMethodSpinnerAdapter;
 import com.mercado.libre.paymentapp.utils.events.presenters.EventPaymentPresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickPaymentFragEvent;
@@ -77,7 +78,8 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     }
 
     public void loadSpinner(ArrayList<PaymentMethodPojo> paymentMethods){
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(getContext(), paymentMethods);
+        PickPaymentMethodSpinnerAdapter customSpinnerAdapter =
+                new PickPaymentMethodSpinnerAdapter(getContext(), paymentMethods);
         spnPayment.setAdapter(customSpinnerAdapter);
         progressbarVisibility(false);
     }

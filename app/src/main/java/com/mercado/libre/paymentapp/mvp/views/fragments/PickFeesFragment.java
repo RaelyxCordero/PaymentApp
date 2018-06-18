@@ -14,12 +14,12 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
-import com.mercado.libre.paymentapp.mvp.views.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.CustomSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.adapters.PickFeesSpinnerAdapter;
 import com.mercado.libre.paymentapp.utils.events.presenters.EventFeePresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickFeeFragEvent;
 import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
-import com.mercado.libre.paymentapp.utils.pojoModels.ResponseFeesPojo;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Select;
@@ -96,7 +96,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
     }
 
     public void loadSpinner(ArrayList<PayerCost> payerCosts){
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(getContext(), payerCosts);
+        PickFeesSpinnerAdapter customSpinnerAdapter = new PickFeesSpinnerAdapter(getContext(), payerCosts);
         spnFees.setAdapter(customSpinnerAdapter);
         progressbarVisibility(false);
     }

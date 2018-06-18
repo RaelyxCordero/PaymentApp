@@ -1,5 +1,6 @@
 package com.mercado.libre.paymentapp.mvp.views.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,8 +15,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
-import com.mercado.libre.paymentapp.mvp.views.adapters.CustomSpinnerAdapter;
 import com.mercado.libre.paymentapp.mvp.views.adapters.PickPaymentMethodSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.viewModels.PickSpinnerViewModel;
 import com.mercado.libre.paymentapp.utils.events.presenters.EventPaymentPresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickPaymentFragEvent;
@@ -43,12 +44,12 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class PickPaymentFragment extends Fragment implements AdapterView.OnItemSelectedListener,
         Validator.ValidationListener, MaterialDialog.SingleButtonCallback {
-    //TODO: Onsave instance selected item and save instance on back
     @Select(message = "Debe seleccionar un medio de pago")
     @BindView(R.id.spnPayment)
     MaterialSpinner spnPayment;
     @BindView(R.id.fabNext)
     FloatingActionButton fabNext;
+    private PickSpinnerViewModel mViewModel;
     private Validator validator;
     private MaterialDialog materialProgressDialog;
     private PaymentMethodPojo pojo;
@@ -56,6 +57,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(PickSpinnerViewModel.class);
     }
 
     @Override
@@ -65,11 +67,17 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
                 container, false);
 
         ButterKnife.bind(this, view);
-
-        spnPayment.setOnItemSelectedListener(this);
         EventBus.getDefault().register(this);
-        progressbarVisibility(true);
-        EventBus.getDefault().post(new EventPaymentPresenter(EventPaymentPresenter.UI_GET_PAYMENTS));
+        spnPayment.setOnItemSelectedListener(this);
+
+        if (mViewModel.getSpinnerList() == null){
+            progressbarVisibility(true);
+            EventBus.getDefault().post(new EventPaymentPresenter(EventPaymentPresenter.UI_GET_PAYMENTS));
+        }else {
+            loadSpinner(mViewModel.getSpinnerList());
+            spnPayment.setSelection(mViewModel.getSelectedSpinnerItem());
+        }
+
 
 
         validator = new Validator(this);
@@ -122,6 +130,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (position != -1)
             pojo = (PaymentMethodPojo) parent.getItemAtPosition(position);
+        mViewModel.setSelectedSpinnerItem(position + 1);
     }
 
     @Override
@@ -135,6 +144,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
             case PickPaymentFragEvent.SHOW_PAYMENTS:
                 loadSpinner(event.getPaymentMethods());
+                mViewModel.setSpinnerList(event.getPaymentMethods());
                 break;
 
             case PickPaymentFragEvent.SHOW_ERROR_MESSAGE:

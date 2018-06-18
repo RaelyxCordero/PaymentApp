@@ -1,5 +1,6 @@
 package com.mercado.libre.paymentapp.mvp.views;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.mercado.libre.paymentapp.R;
 import com.mercado.libre.paymentapp.mvp.presenters.BankPresenter;
 import com.mercado.libre.paymentapp.mvp.presenters.FeePresenter;
 import com.mercado.libre.paymentapp.mvp.presenters.PaymentPresenter;
+import com.mercado.libre.paymentapp.mvp.views.viewModels.MainActivityViewModel;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,20 +36,23 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements NavHost, NavController.OnNavigatedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-//TODO: Onsave instance toolbar icon and state
+
     @BindView(R.id.tbIcon)
     ImageView tbIcon;
     @BindView(R.id.tbTitle)
     TextView tbTitle;
     private boolean tbBackStatus = false;
+    private MainActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        getNavController().addOnNavigatedListener(this);
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
         PaymentPresenter paymentPresenter = PaymentPresenter.getInstance();
         BankPresenter bankPresenter = BankPresenter.getInstance();
@@ -59,7 +64,11 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
                 .build()
         );
 
-        getNavController().addOnNavigatedListener(this);
+        tbBackStatus = mViewModel.isTbStatus();
+        if (tbBackStatus)
+            tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_back));
+        else
+            tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
 
     }
 
@@ -109,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
 
             case MainActivityEvent.NEXT_PRESSED:
                 tbBackStatus = true;
+                mViewModel.setTbStatus(true);
                 tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_back));
                 break;
         }
@@ -121,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
 
         if (getNavController().getCurrentDestination().getId() == R.id.addAmountFragment){
             tbBackStatus = false;
+            if (mViewModel != null)
+                mViewModel.setTbStatus(false);
             tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
             tbTitle.setText(getResources().getString(R.string.title_add_amount));
 

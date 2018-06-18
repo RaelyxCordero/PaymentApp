@@ -1,5 +1,6 @@
 package com.mercado.libre.paymentapp.mvp.views.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
 import com.mercado.libre.paymentapp.mvp.views.adapters.CustomSpinnerAdapter;
 import com.mercado.libre.paymentapp.mvp.views.adapters.PickFeesSpinnerAdapter;
+import com.mercado.libre.paymentapp.mvp.views.viewModels.PickSpinnerViewModel;
 import com.mercado.libre.paymentapp.utils.events.presenters.EventFeePresenter;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mercado.libre.paymentapp.utils.events.views.PickFeeFragEvent;
@@ -43,13 +45,13 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class PickFeesFragment extends Fragment implements AdapterView.OnItemSelectedListener,
         Validator.ValidationListener, MaterialDialog.SingleButtonCallback{
-    //TODO: Onsave instance selected item and save instance on back
 
     @Select(message = "Debe seleccionar una cantidad de cuotas")
     @BindView(R.id.spnFees)
     MaterialSpinner spnFees;
     @BindView(R.id.fabDone)
     FloatingActionButton fabDone;
+    private PickSpinnerViewModel mViewModel;
     private Validator validator;
     private MaterialDialog materialProgressDialog;
     private PayerCost pojo;
@@ -57,6 +59,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(PickSpinnerViewModel.class);
     }
 
     @Override
@@ -66,22 +69,23 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
                 container, false);
 
         ButterKnife.bind(this, view);
-
         EventBus.getDefault().register(this);
-        progressbarVisibility(true);
         spnFees.setOnItemSelectedListener(this);
 
-        Log.e("TAG", getArguments().getString("paymentId") + ", " + getArguments().getInt("amount")
-                + ", " + getArguments().getString("bankId"));
+        if (mViewModel.getSpinnerList() == null){
+            progressbarVisibility(true);
+            EventFeePresenter event = new EventFeePresenter(
+                    EventFeePresenter.UI_GET_FEE,
+                    getArguments().getString("paymentId"),
+                    getArguments().getString("bankId"),
+                    getArguments().getInt("amount")
+            );
 
-        EventFeePresenter event = new EventFeePresenter(
-                EventFeePresenter.UI_GET_FEE,
-                getArguments().getString("paymentId"),
-                getArguments().getString("bankId"),
-                getArguments().getInt("amount")
-        );
-
-        EventBus.getDefault().post(event);
+            EventBus.getDefault().post(event);
+        }else {
+            loadSpinner(mViewModel.getSpinnerList());
+            spnFees.setSelection(mViewModel.getSelectedSpinnerItem());
+        }
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -143,6 +147,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (position != -1)
             pojo = (PayerCost) parent.getItemAtPosition(position);
+        mViewModel.setSelectedSpinnerItem(position + 1);
     }
 
     @Override
@@ -184,6 +189,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
 
             case PickFeeFragEvent.SHOW_FEES:
                 loadSpinner(event.getPayerFees());
+                mViewModel.setSpinnerList(event.getPayerFees());
                 break;
 
             case PickFeeFragEvent.SHOW_ERROR_MESSAGE:

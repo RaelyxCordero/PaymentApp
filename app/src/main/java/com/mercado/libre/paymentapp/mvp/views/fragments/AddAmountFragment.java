@@ -1,5 +1,6 @@
 package com.mercado.libre.paymentapp.mvp.views.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mercado.libre.paymentapp.R;
+import com.mercado.libre.paymentapp.mvp.views.viewModels.MainActivityViewModel;
 import com.mercado.libre.paymentapp.utils.events.views.MainActivityEvent;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -39,10 +41,12 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
     @BindView(R.id.fabNext)
     FloatingActionButton fabNext;
     private Validator validator;
+    private MainActivityViewModel mViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
     }
 
     @Override
@@ -62,14 +66,15 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
     @Override
     public void onResume() {
         super.onResume();
-        if (!getArguments().getString("paymentId").equals("no_id")){
+        if (getArguments().getInt("amount") != 0 && !mViewModel.isDialogPaymentShowed()){
 
             String message = "Se ha realizado exitosamente el pago por: " + getArguments().getInt("amount") +"CLP"
-                    + "\n usando: " + getArguments().getString("paymentId")
-                    + "\n con el banco: " + getArguments().getString("bankId")
+                    + "\n usando: " + getArguments().getString("paymentName")
+                    + "\n con el banco: " + getArguments().getString("bankName")
                     + "\n siendo: " + getArguments().getString("payerCosts")
                     ;
             showDialogPayFinishedMessage(R.string.success, message);
+
         }
     }
 
@@ -129,6 +134,8 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
+                        mViewModel.setDialogPaymentShowed(true);
+
                     }
                 })
                 .show();

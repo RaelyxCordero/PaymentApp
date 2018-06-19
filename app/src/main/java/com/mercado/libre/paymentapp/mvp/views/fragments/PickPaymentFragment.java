@@ -167,6 +167,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));
         bundle.putString("paymentId", pojo.getId());
+        bundle.putString("paymentName", pojo.getName());
 
         Log.e("TAG", bundle.getString("paymentId") + ", " + bundle.getInt("amount"));
 

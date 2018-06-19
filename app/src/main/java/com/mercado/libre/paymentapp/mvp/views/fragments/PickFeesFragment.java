@@ -159,8 +159,8 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
     public void onValidationSucceeded() {
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));
-        bundle.putString("paymentId", getArguments().getString("paymentId"));
-        bundle.putString("bankId", getArguments().getString("bankId"));
+        bundle.putString("paymentName", getArguments().getString("paymentName"));
+        bundle.putString("bankName", getArguments().getString("bankName"));
         bundle.putString("payerCosts", pojo.getRecommendedMessage());
 
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));

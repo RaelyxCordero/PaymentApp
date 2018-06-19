@@ -22,12 +22,12 @@
             android:defaultValue="0"
             app:type="integer" />
         <argument
-            android:name="paymentId"
-            android:defaultValue='no_id'
+            android:name="paymentName"
+            android:defaultValue='no_name'
             app:type="string" />
         <argument
-            android:name="bankId"
-            android:defaultValue='no_id'
+            android:name="bankName"
+            android:defaultValue='no_name'
             app:type="string" />
         <argument
             android:name="payerCosts"
@@ -71,6 +71,10 @@
             android:name="paymentId"
             android:defaultValue='no_id'
             app:type="string" />
+        <argument
+            android:name="paymentName"
+            android:defaultValue='no_name'
+            app:type="string" />
     </fragment>
     <fragment
         android:id="@+id/pickFeesFragment"
@@ -93,8 +97,16 @@
             android:defaultValue='no_id'
             app:type="string" />
         <argument
+            android:name="paymentName"
+            android:defaultValue='no_name'
+            app:type="string" />
+        <argument
             android:name="bankId"
             android:defaultValue='no_id'
+            app:type="string" />
+        <argument
+            android:name="bankName"
+            android:defaultValue='no_name'
             app:type="string" />
     </fragment>
 </navigation>

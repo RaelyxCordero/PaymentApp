@@ -146,7 +146,9 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
         Bundle bundle = new Bundle();
         bundle.putInt("amount", getArguments().getInt("amount"));
         bundle.putString("paymentId", getArguments().getString("paymentId"));
+        bundle.putString("paymentName", getArguments().getString("paymentName"));
         bundle.putString("bankId", pojo.getId());
+        bundle.putString("bankName", pojo.getName());
 
         Log.e("TAG", bundle.getString("paymentId") + ", " + bundle.getInt("amount")
                 + ", " + bundle.getString("bankId"));

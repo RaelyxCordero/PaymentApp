@@ -73,12 +73,16 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
 
         if (mViewModel.getSpinnerList() == null){
             progressbarVisibility(true);
+
+            //if no items, trigger an event to get it
             EventBankPresenter event = new EventBankPresenter(
                     EventBankPresenter.UI_GET_BANKS,
                     getArguments().getString("paymentId")
             );
             EventBus.getDefault().post(event);
         }else {
+
+            //else load saved items
             loadSpinner(mViewModel.getSpinnerList());
             spnBank.setSelection(mViewModel.getSelectedSpinnerItem());
         }
@@ -153,6 +157,7 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
         Log.e("TAG", bundle.getString("paymentId") + ", " + bundle.getInt("amount")
                 + ", " + bundle.getString("bankId"));
 
+        //navigate to PickFeesFragmet
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
         Navigation.findNavController(fabNext).navigate(R.id.pickFeesFragment, bundle);
     }
@@ -183,25 +188,34 @@ public class PickBankFragment extends Fragment implements AdapterView.OnItemSele
                 .show();
     }
 
+    //listen events PickBankFragEvent
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PickBankFragEvent event){
         switch (event.getEventType()){
 
+            //if event type is SHOW_BANKS, load the spinner and save it in ViewModel
             case PickBankFragEvent.SHOW_BANKS:
                 loadSpinner(event.getBanks());
                 mViewModel.setSpinnerList(event.getBanks());
                 break;
 
+            //if event type is SHOW_ERROR_MESSAGE, show the
+            //received custom message in error dialog
+            // and log the response code and response message
             case PickBankFragEvent.SHOW_ERROR_MESSAGE:
                 showDialogProblemsMessage(R.string.error, event.getCustomMessage());
                 Log.e("TAG", event.getResponseCode() + " " + event.getResponseMessage());
                 break;
+
+            //if event type is SHOW_EMPTY_LIST_MESSAGE, show the
+            //received custom message in info dialog
             case PickBankFragEvent.SHOW_EMPTY_LIST_MESSAGE:
                 showDialogProblemsMessage(R.string.information, event.getCustomMessage());
                 break;
         }
     }
 
+    //if dialog button is clicked get back into previous navigation node
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         getActivity().onBackPressed();

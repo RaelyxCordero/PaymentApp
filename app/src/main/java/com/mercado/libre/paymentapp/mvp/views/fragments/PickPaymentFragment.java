@@ -72,8 +72,12 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
         if (mViewModel.getSpinnerList() == null){
             progressbarVisibility(true);
+
+            //if no items, trigger an event to get it
             EventBus.getDefault().post(new EventPaymentPresenter(EventPaymentPresenter.UI_GET_PAYMENTS));
         }else {
+
+            //else load saved items
             loadSpinner(mViewModel.getSpinnerList());
             spnPayment.setSelection(mViewModel.getSelectedSpinnerItem());
         }
@@ -138,17 +142,23 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
     }
 
+    //listen events PickPaymentFragEvent
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PickPaymentFragEvent event){
         switch (event.getEventType()){
 
+            //if event type is SHOW_PAYMENTS, load the spinner and save it in ViewModel
             case PickPaymentFragEvent.SHOW_PAYMENTS:
                 loadSpinner(event.getPaymentMethods());
                 mViewModel.setSpinnerList(event.getPaymentMethods());
                 break;
 
+            //if event type is SHOW_ERROR_MESSAGE, show the
+            //received custom message in error dialog
+            // and log the response code and response message
             case PickPaymentFragEvent.SHOW_ERROR_MESSAGE:
                 progressbarVisibility(false);
+
                 new MaterialDialog.Builder(getContext())
                         .title(R.string.error)
                         .content(event.getCustomMessage())
@@ -171,6 +181,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
 
         Log.e("TAG", bundle.getString("paymentId") + ", " + bundle.getInt("amount"));
 
+        //navigate to pickBankFragment
         EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
         Navigation.findNavController(fabNext).navigate(R.id.pickBankFragment, bundle);
     }
@@ -192,6 +203,7 @@ public class PickPaymentFragment extends Fragment implements AdapterView.OnItemS
     }
 
 
+    //if dialog button is clicked get back into previous navigation node
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         getActivity().onBackPressed();

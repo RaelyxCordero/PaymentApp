@@ -11,6 +11,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class BasePresenter {
+
+    /*All presenters extends from BasePresenter.
+    All of them passes a service object to his model
+    to make de service call, that object is builded in this BasePresenter constructor
+    * */
+
     private static final long TIMEOUT = 60;
     private static final String URL_BASE = "https://api.mercadopago.com/v1/";
     protected static final String PUBLIC_KEY = "444a9ef5-8a6b-429f-abdf-587639155d88";

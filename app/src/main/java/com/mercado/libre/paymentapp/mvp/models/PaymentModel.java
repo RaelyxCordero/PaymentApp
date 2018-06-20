@@ -23,6 +23,9 @@ import retrofit2.Response;
  */
 
 public class PaymentModel {
+
+    /* SIGLETON PATTERN METHODS
+     * */
     private static final PaymentModel mInstance = new PaymentModel();
 
     public static PaymentModel getInstance() {
@@ -33,6 +36,8 @@ public class PaymentModel {
         EventBus.getDefault().register(this);
     }
 
+    /* CALL SERVICE, get all payments methods
+     * */
     private void getPayments(ApiInterface service, String publicKey){
         final EventPaymentPresenter eventPresenter =
                 new EventPaymentPresenter(EventPaymentPresenter.MODEL_SUCCES_PAYMENTS_RESPONSE);
@@ -47,11 +52,15 @@ public class PaymentModel {
 
                     case HttpCode.CODE_200_SUCCESSFUL:
                     case HttpCode.CODE_201_SUCCESSFUL:
+                        //if successful, return list of paymentsMethods and post it in event
+                        //to presenter (EventPaymentPresenter)
                         eventPresenter.setPaymentsList(response.body());
                         EventBus.getDefault().post(eventPresenter);
                         break;
 
                     default:
+                        //else, return code and message to post an event, and presenter
+                        //send dialog text on event to view depending of response code
                         eventPresenter.setResponseCode(response.code());
                         eventPresenter.setResponseMessage(response.message());
                         eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
@@ -62,6 +71,8 @@ public class PaymentModel {
 
             @Override
             public void onFailure(Call<ArrayList<PaymentMethodPojo>> call, Throwable t) {
+                //onFailure, return code and message to post an event and presenter
+                //send dialog text on event to view in case of code CODE_NO_RESPONSE_ERROR
                 eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
                 eventPresenter.setResponseMessage(t.getMessage());
                 eventPresenter.setEventType(EventPaymentPresenter.MODEL_FAILURE_PAYMENTS_RESPONSE);
@@ -71,6 +82,7 @@ public class PaymentModel {
 
     }
 
+    //EXECUTE getPayments() if EventPaymentModel is posted
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEvent(EventPaymentModel evnt){
         getPayments(evnt.getService(),

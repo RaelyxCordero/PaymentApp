@@ -23,6 +23,9 @@ import retrofit2.Response;
  */
 
 public class BankModel {
+
+    /* SIGLETON PATTERN METHODS
+    * */
     private static final BankModel mInstance = new BankModel();
 
     public static BankModel getInstance() {
@@ -32,6 +35,9 @@ public class BankModel {
     private BankModel() {
         EventBus.getDefault().register(this);
     }
+
+    /* CALL SERVICE, get all banks by a paymentId
+    * */
 
     private void getBanksByPaymentId(ApiInterface service, String publicKey, String paymentId){
         final EventBankPresenter eventPresenter =
@@ -49,10 +55,14 @@ public class BankModel {
                     case HttpCode.CODE_200_SUCCESSFUL:
                     case HttpCode.CODE_201_SUCCESSFUL:
 
+                        //if successful, return list of banks and post it in event
+                        //to presenter (EventBankPresenter)
                         eventPresenter.setBanksList(response.body());
                         EventBus.getDefault().post(eventPresenter);
                         break;
 
+                        //else, return code and message to post an event, and presenter
+                        //send dialog text on event to view depending of response code
                     default:
                         eventPresenter.setResponseCode(response.code());
                         eventPresenter.setResponseMessage(response.message());
@@ -65,6 +75,8 @@ public class BankModel {
 
             @Override
             public void onFailure(Call<ArrayList<BancoPojo>> call, Throwable t) {
+                //onFailure, return code and message to post an event and presenter
+                //send dialog text on event to view in case of code CODE_NO_RESPONSE_ERROR
                 eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
                 eventPresenter.setResponseMessage(t.getMessage());
                 eventPresenter.setEventType(EventBankPresenter.MODEL_FAILURE_BANK_RESPONSE);
@@ -73,6 +85,7 @@ public class BankModel {
         });
     }
 
+    //EXECUTE getBanksByPaymentId() if EventBankModel is posted
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEvent(EventBankModel eventBank){
         getBanksByPaymentId(eventBank.getService(),

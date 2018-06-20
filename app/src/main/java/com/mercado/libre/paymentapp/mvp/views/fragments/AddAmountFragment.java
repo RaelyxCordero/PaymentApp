@@ -66,6 +66,8 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
     @Override
     public void onResume() {
         super.onResume();
+
+        //if getArguments has an amount, then show the dialog of the PaymentFinished
         if (getArguments().getInt("amount") != 0 && !mViewModel.isDialogPaymentShowed()){
 
             String message = "Se ha realizado exitosamente el pago por: " + getArguments().getInt("amount") +"CLP"
@@ -97,6 +99,7 @@ public class AddAmountFragment extends Fragment implements Validator.ValidationL
                 Bundle bundle = new Bundle();
                 bundle.putInt("amount", amount);
 
+                //navigate to pickPaymentFragment
                 EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
                 Navigation.findNavController(fabNext).navigate(R.id.pickPaymentFragment, bundle);
             }else {

@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
     private boolean tbBackStatus = false;
     private MainActivityViewModel mViewModel;
 
+    //presenters will live as long as live MainActivity
+    PaymentPresenter paymentPresenter = PaymentPresenter.getInstance();
+    BankPresenter bankPresenter = BankPresenter.getInstance();
+    FeePresenter feePresenter = FeePresenter.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
         getNavController().addOnNavigatedListener(this);
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        PaymentPresenter paymentPresenter = PaymentPresenter.getInstance();
-        BankPresenter bankPresenter = BankPresenter.getInstance();
-        FeePresenter feePresenter = FeePresenter.getInstance();
-
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Roboto-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
 
+        //if navigation is not at startDestination
         tbBackStatus = mViewModel.isTbStatus();
-        if (tbBackStatus)
+        if (tbBackStatus) //show back arrow
             tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_back));
-        else
+        else //show close icon
             tbIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
 
     }
@@ -90,9 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
 
     @Override
     public void onBackPressed() {
-        if (tbBackStatus){
+        if (tbBackStatus){ //if navigation is not at startDestination
             super.onBackPressed();
-        }else {
+        }else { //finish activity
             finish();
         }
     }
@@ -108,14 +110,12 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
         return Navigation.findNavController(this, R.id.container);
     }
 
+    //listen events type MainActivityEvent
     @Subscribe
     public void onEvent(MainActivityEvent event){
         switch (event.getEventType()){
 
-            case MainActivityEvent.BACK_PRESSED:
-                onViewClicked();
-                break;
-
+            //the navigation is not at startDestination
             case MainActivityEvent.NEXT_PRESSED:
                 tbBackStatus = true;
                 mViewModel.setTbStatus(true);
@@ -126,9 +126,8 @@ public class MainActivity extends AppCompatActivity implements NavHost, NavContr
 
     @Override
     public void onNavigated(@NonNull NavController controller, @NonNull NavDestination destination) {
-        Log.e(TAG, "" + getNavController().getCurrentDestination().getId());
-        Log.e(TAG, "" + R.id.addAmountFragment);
 
+        //changing toolbar title about current destination fragment
         if (getNavController().getCurrentDestination().getId() == R.id.addAmountFragment){
             tbBackStatus = false;
             if (mViewModel != null)

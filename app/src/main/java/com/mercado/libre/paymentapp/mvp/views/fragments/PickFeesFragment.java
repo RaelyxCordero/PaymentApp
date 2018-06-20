@@ -74,6 +74,8 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
 
         if (mViewModel.getSpinnerList() == null){
             progressbarVisibility(true);
+
+            //if no items, trigger an event to get it
             EventFeePresenter event = new EventFeePresenter(
                     EventFeePresenter.UI_GET_FEE,
                     getArguments().getString("paymentId"),
@@ -83,6 +85,8 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
 
             EventBus.getDefault().post(event);
         }else {
+
+            //else load saved items
             loadSpinner(mViewModel.getSpinnerList());
             spnFees.setSelection(mViewModel.getSelectedSpinnerItem());
         }
@@ -163,7 +167,7 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
         bundle.putString("bankName", getArguments().getString("bankName"));
         bundle.putString("payerCosts", pojo.getRecommendedMessage());
 
-        EventBus.getDefault().post(new MainActivityEvent(MainActivityEvent.NEXT_PRESSED));
+        //navigate to addAmountFragment and show finished payment dialog
         Navigation.findNavController(fabDone).navigate(R.id.addAmountFragment, bundle);
     }
 
@@ -183,26 +187,34 @@ public class PickFeesFragment extends Fragment implements AdapterView.OnItemSele
         }
     }
 
+    //listen events PickFeeFragEvent
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PickFeeFragEvent event){
         switch (event.getEventType()){
 
+            //if event type is SHOW_FEES, load the spinner and save it in ViewModel
             case PickFeeFragEvent.SHOW_FEES:
                 loadSpinner(event.getPayerFees());
                 mViewModel.setSpinnerList(event.getPayerFees());
                 break;
 
+            //if event type is SHOW_ERROR_MESSAGE, show the
+            //received custom message in error dialog
+            // and log the response code and response message
             case PickFeeFragEvent.SHOW_ERROR_MESSAGE:
                 showDialogProblemsMessage(R.string.error, event.getCustomMessage());
-
                 Log.e("TAG", event.getResponseCode() + " " + event.getResponseMessage());
                 break;
+
+            //if event type is SHOW_EMPTY_LIST_MESSAGE, show the
+            //received custom message in info dialog
             case PickFeeFragEvent.SHOW_EMPTY_LIST_MESSAGE:
                 showDialogProblemsMessage(R.string.information, event.getCustomMessage());
                 break;
         }
     }
 
+    //if dialog button is clicked get back into previous navigation node
     @Override
     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
         getActivity().onBackPressed();

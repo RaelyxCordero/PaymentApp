@@ -23,6 +23,9 @@ import retrofit2.Response;
  */
 
 public class FeeModel {
+
+    /* SIGLETON PATTERN METHODS
+     * */
     private static final FeeModel mInstance = new FeeModel();
 
     public static FeeModel getInstance() {
@@ -33,6 +36,9 @@ public class FeeModel {
         EventBus.getDefault().register(this);
     }
 
+
+    /* CALL SERVICE, get all fees by an amount, a paymentId and issuerId
+     * */
     private void getFeesByAmount(ApiInterface service, String publicKey,
                                  int amount, String paymentId, String issuerId){
         final EventFeePresenter eventPresenter = new EventFeePresenter(
@@ -48,11 +54,16 @@ public class FeeModel {
 
                     case HttpCode.CODE_200_SUCCESSFUL:
                     case HttpCode.CODE_201_SUCCESSFUL:
+
+                        //if successful, return list of feesResponse and post it in event
+                        //to presenter (EventFeePresenter)
                         eventPresenter.setFeesList(response.body());
                         EventBus.getDefault().post(eventPresenter);
                         break;
 
                     default:
+                        //else, return code and message to post an event, and presenter
+                        //send dialog text on event to view depending of response code
                         eventPresenter.setResponseCode(response.code());
                         eventPresenter.setResponseMessage(response.message());
                         eventPresenter.setEventType(EventFeePresenter.MODEL_FAILURE_FEES_RESPONSE);
@@ -63,6 +74,8 @@ public class FeeModel {
 
             @Override
             public void onFailure(Call<ArrayList<ResponseFeesPojo>> call, Throwable t) {
+                //onFailure, return code and message to post an event and presenter
+                //send dialog text on event to view in case of code CODE_NO_RESPONSE_ERROR
                 eventPresenter.setResponseCode(HttpCode.CODE_NO_RESPONSE_ERROR);
                 eventPresenter.setResponseMessage(t.getMessage());
                 eventPresenter.setEventType(EventFeePresenter.MODEL_FAILURE_FEES_RESPONSE);
@@ -71,6 +84,7 @@ public class FeeModel {
         });
     }
 
+    //EXECUTE getFeesByAmount() if EventFeeModel is posted
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onEvent(EventFeeModel evnt){
         getFeesByAmount(

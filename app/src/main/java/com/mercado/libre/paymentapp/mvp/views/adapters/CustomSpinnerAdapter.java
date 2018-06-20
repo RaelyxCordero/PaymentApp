@@ -9,15 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mercado.libre.paymentapp.R;
-import com.mercado.libre.paymentapp.utils.pojoModels.BancoPojo;
-import com.mercado.libre.paymentapp.utils.pojoModels.PayerCost;
-import com.mercado.libre.paymentapp.utils.pojoModels.PaymentMethodPojo;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+/*Custom Spinner Adapter.... other spinners adapters in app, extends from it
+* */
 
 public class CustomSpinnerAdapter extends BaseAdapter {
 

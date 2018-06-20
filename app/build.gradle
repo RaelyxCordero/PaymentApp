@@ -30,7 +30,7 @@ dependencies {
 
     //test
     testImplementation 'junit:junit:4.12'
-//    testImplementation 'org.mockito:mockito-core:2.0.5-beta'
+    testImplementation group: 'org.jmock', name: 'jmock', version: '2.5.1'
     testImplementation 'org.mockito:mockito-core:2.7.22'
     androidTestImplementation 'org.mockito:mockito-android:2.7.22'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

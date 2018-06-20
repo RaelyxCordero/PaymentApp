@@ -48,20 +48,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class AddAmountFragmentInstrumented {
-    AddAmountFragment testedFragment;
-    PickPaymentFragment testedFragment2;
-    PickPaymentFragment spyTestedFragment2;
+    MainActivity mActivity;
 
     @Rule
     public ActivityTestRule rule = new ActivityTestRule(MainActivity.class,
             true, true);
-
-    @Before
-    public void setup(){
-        testedFragment = mock(AddAmountFragment.class);
-        testedFragment2 = mock(PickPaymentFragment.class);
-        spyTestedFragment2 = spy(testedFragment2);
-    }
 
     @Test
     public void checkAmountErrorText() throws Exception{
@@ -93,7 +84,7 @@ public class AddAmountFragmentInstrumented {
     }
 
     @Test
-    public void checkTypedValueSaved(){
+    public void checkTypedValueSaved() throws Exception{
         onView(withId(R.id.tvAmount)).perform(clearText());
         onView(withId(R.id.tvAmount)).perform(typeText("150000"));
         onView(withId(R.id.tvAmount)).perform(closeSoftKeyboard());
@@ -111,5 +102,34 @@ public class AddAmountFragmentInstrumented {
 
         rule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         onView(withId(R.id.tvAmount)).check(matches(withText("150000")));
+    }
+
+    @Test
+    public void checkIf_DialogPaymentFinished_IsShowed(){
+        final int amount = 150000;
+        final String paymentName = "Visa";
+        final String bankName = "Banco Galicia";
+        final String payerCosts = "6 cuotas de $ 1.936,83 ($ 11.621,00)";
+
+        mActivity = (MainActivity)rule.getActivity();
+        mActivity.runOnUiThread(new Runnable() {
+
+            public void run() {
+                Bundle bundle = new Bundle();
+                bundle.putInt("amount", amount);
+                bundle.putString("paymentName", paymentName);
+                bundle.putString("bankName", bankName);
+                bundle.putString("payerCosts", payerCosts);
+
+                mActivity.getNavController().navigate(R.id.addAmountFragment, bundle);
+            }
+        });
+
+        String message = "Se ha realizado exitosamente el pago por: " + amount +"CLP"
+                + "\n usando: " + paymentName
+                + "\n con el banco: " + bankName
+                + "\n siendo: " + payerCosts;
+
+        onView(withText(message)).check(matches(isDisplayed()));
     }
 }
